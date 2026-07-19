@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Groundtruth</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand"><img src="assets/logo.svg" class="logo" alt=""> Groundtruth</a>
+    <div class="nav-links"><a href="pricing.html">Pricing</a></div>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="center" style="margin-bottom:20px">
+      <img src="assets/logo.svg" style="width:40px;height:40px" alt="">
+      <h2 id="authTitle" style="margin:.5rem 0 0">Welcome back</h2>
+      <p class="muted" id="authSub" style="font-size:.9rem">Log in to your Groundtruth account</p>
+    </div>
+
+    <div class="tabs">
+      <button id="tabLogin" class="active">Log in</button>
+      <button id="tabSignup">Sign up</button>
+    </div>
+
+    <form id="authForm">
+      <div class="field" id="nameField" style="display:none">
+        <label>Full name</label>
+        <input class="input" type="text" id="fullName" autocomplete="name" placeholder="Jane Doe">
+      </div>
+      <div class="field">
+        <label>Work email</label>
+        <input class="input" type="email" id="email" autocomplete="email" required placeholder="you@company.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input class="input" type="password" id="password" autocomplete="current-password" required placeholder="••••••••" minlength="8">
+        <div class="muted" id="pwHint" style="font-size:.78rem;margin-top:.3rem;display:none">At least 8 characters.</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" id="submitBtn" type="submit">Log in</button>
+      <div class="form-error" id="formError"></div>
+    </form>
+
+    <p class="center muted" style="font-size:.85rem;margin-top:6px">
+      By continuing you agree to our fair-use terms. No card required for the Free plan.
+    </p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

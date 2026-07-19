@@ -1,0 +1,7 @@
+# Optional: real LLM extraction via Google's LangExtract.
+# The app runs fully in demo mode WITHOUT this. Install it + set an API key
+# (GEMINI_API_KEY or OPENAI_API_KEY) to enable production-grade extraction.
+#
+#   pip install -r requirements-llm.txt
+#
+langextract>=1.0.0

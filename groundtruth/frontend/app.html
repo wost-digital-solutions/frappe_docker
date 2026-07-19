@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groundtruth — Extract</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner" style="max-width:100%">
+    <a href="/" class="brand"><img src="assets/logo.svg" class="logo" alt=""> Groundtruth</a>
+    <div class="nav-links">
+      <span id="planPill" class="badge-mode llm" style="text-transform:capitalize">Free</span>
+      <a href="pricing.html" class="hide-sm">Upgrade</a>
+      <a href="#" id="logoutBtn">Log out</a>
+    </div>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="usage-meter">
+      <div style="font-size:.8rem;color:var(--muted);font-weight:600">THIS MONTH</div>
+      <div style="font-weight:700;font-size:1.1rem" id="usageText">— / —</div>
+      <div class="meter-bar"><div class="meter-fill" id="meterFill" style="width:0%"></div></div>
+      <div style="font-size:.78rem;color:var(--muted)" id="usageSub">pages used</div>
+      <a href="pricing.html" class="btn btn-primary btn-sm" style="width:100%;margin-top:10px;justify-content:center">Upgrade plan</a>
+    </div>
+    <div>
+      <div class="side-link active" data-view="extract">➕ New extraction</div>
+      <div class="side-link" data-view="history">🕑 History</div>
+      <div class="side-link" data-view="api">🔌 API & keys</div>
+      <a class="side-link" href="pricing.html">💳 Plans & billing</a>
+    </div>
+  </aside>
+
+  <main class="app-main">
+
+    <!-- EXTRACT VIEW -->
+    <div id="view-extract">
+      <div id="modeBanner" class="notice info hidden"></div>
+
+      <h2 style="margin-bottom:4px">New extraction</h2>
+      <p class="muted">Pick a template, then upload a document or paste text.</p>
+
+      <h4 style="margin-top:18px">1. Choose what to extract</h4>
+      <div class="template-grid" id="templateGrid"></div>
+
+      <div id="customFieldsWrap" class="hidden" style="margin-top:14px">
+        <label style="font-weight:600;font-size:.9rem">Describe the fields you want (comma-separated)</label>
+        <input class="input" id="customFields" placeholder="e.g. policy number, claimant name, incident date, claim amount">
+      </div>
+
+      <h4 style="margin-top:24px">2. Add your document</h4>
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".pdf,.txt,.md,.csv" style="display:none">
+        <div style="font-size:1.6rem">📄</div>
+        <div style="font-weight:600">Drop a PDF or text file, or click to browse</div>
+        <div class="muted" style="font-size:.85rem">PDF, TXT · up to 600k characters</div>
+      </div>
+      <div class="center muted" style="margin:10px 0;font-size:.85rem">— or —</div>
+      <textarea id="pasteText" rows="6" placeholder="Paste raw text here…"></textarea>
+
+      <div class="toolbar" style="margin-top:16px">
+        <button class="btn btn-primary btn-lg" id="runBtn">Extract data →</button>
+        <span id="runStatus" class="muted"></span>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="results" class="hidden" style="margin-top:24px">
+        <div class="toolbar">
+          <h3 style="margin:0">Results</h3>
+          <span id="resultMode" class="badge-mode demo"></span>
+          <span class="muted" id="resultMeta" style="font-size:.85rem"></span>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" id="exportJson">Export JSON</button>
+            <button class="btn btn-ghost btn-sm" id="exportCsv">Export CSV</button>
+            <button class="btn btn-ghost btn-sm" id="viewToggle">Table view</button>
+          </div>
+        </div>
+        <div id="resultWarning" class="notice warn hidden"></div>
+
+        <div class="result-cols" id="groundedView">
+          <div>
+            <div class="muted" style="font-size:.8rem;margin-bottom:6px">SOURCE DOCUMENT — highlights are grounded</div>
+            <div class="doc-view" id="docView"></div>
+          </div>
+          <div>
+            <div class="muted" style="font-size:.8rem;margin-bottom:6px">EXTRACTED FIELDS — click to locate in source</div>
+            <div class="fields-view" id="fieldsView"></div>
+          </div>
+        </div>
+
+        <div id="tableView" class="hidden" style="overflow-x:auto">
+          <table class="table-view"><thead><tr><th>Field</th><th>Value</th><th>Attributes</th></tr></thead><tbody id="tableBody"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY VIEW -->
+    <div id="view-history" class="hidden">
+      <h2>Extraction history</h2>
+      <p class="muted">Your last 50 extractions.</p>
+      <div id="historyList"></div>
+    </div>
+
+    <!-- API VIEW -->
+    <div id="view-api" class="hidden">
+      <h2>API & keys</h2>
+      <p class="muted">Use the REST API to extract programmatically. <strong>API access is included on Pro and Business plans.</strong></p>
+      <div class="card" style="margin-top:12px">
+        <label style="font-weight:600;font-size:.9rem">Your API key</label>
+        <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+          <input class="input" id="apiKeyField" readonly style="font-family:var(--mono);font-size:.85rem">
+          <button class="btn btn-ghost btn-sm" id="copyKey">Copy</button>
+          <button class="btn btn-ghost btn-sm" id="rotateKey">Rotate</button>
+        </div>
+        <p class="muted" style="font-size:.82rem;margin-top:8px">Keep this secret. Rotating immediately invalidates the old key.</p>
+      </div>
+      <h4 style="margin-top:20px">Example request</h4>
+      <div class="doc-view" style="max-height:none"><code id="curlExample"></code></div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

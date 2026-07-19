@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groundtruth — Turn any document into verifiable structured data</title>
+<meta name="description" content="Extract structured data from any PDF or document — with every field highlighted in the source, so you can verify it in one click. Built on Google's LangExtract. Free plan, no card.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+<meta property="og:title" content="Groundtruth — verifiable document data extraction">
+<meta property="og:description" content="Every extracted field, traced back to the source. Verify in one click.">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand"><img src="assets/logo.svg" class="logo" alt=""> Groundtruth</a>
+    <div class="nav-links">
+      <a href="#how" class="hide-sm">How it works</a>
+      <a href="#why" class="hide-sm">Why grounding</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="login.html">Log in</a>
+      <a href="login.html?mode=signup" class="btn btn-primary btn-sm">Start free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container center">
+    <span class="eyebrow">🔎 Built on Google's open-source LangExtract</span>
+    <h1>Every extracted field,<br><span class="hl">traced back to the source.</span></h1>
+    <p class="sub">Groundtruth reads your invoices, contracts, CVs, research papers and clinical notes and returns clean JSON, CSV or a table — with every value highlighted in the original document, so you can verify it in seconds instead of trusting a black box.</p>
+    <div class="cta-row">
+      <a href="login.html?mode=signup" class="btn btn-primary btn-lg">Start free →</a>
+      <a href="#demo" class="btn btn-ghost btn-lg">See a live example</a>
+    </div>
+    <div class="trust-line">25 pages/month free · no credit card · cancel anytime</div>
+  </div>
+
+  <!-- Interactive grounding demo -->
+  <div class="container" id="demo">
+    <div class="demo-card">
+      <div class="demo-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span style="margin-left:12px;font-size:.82rem;color:var(--muted)">invoice-2045.pdf — click a field to see its source</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-doc" id="demoDoc">
+<span data-f="f1">Invoice <span class="mark" data-src="f1">#INV-2045</span></span>
+Billed by <span class="mark" data-src="f2">Acme Corp</span>
+Date: <span class="mark" data-src="f3">2024-03-14</span>
+Due: 2024-04-13
+
+Consulting services ........ <span class="mark" data-src="f4">$1,200.00</span>
+Tax (10%) .................. $120.00
+<strong>Total Due: <span class="mark" data-src="f5">$1,320.00</span></strong>
+        </div>
+        <div class="demo-fields" id="demoFields">
+          <div class="field-chip" data-f="f1"><span class="k">invoice_number</span><span class="v">INV-2045</span></div>
+          <div class="field-chip" data-f="f2"><span class="k">vendor</span><span class="v">Acme Corp</span></div>
+          <div class="field-chip" data-f="f3"><span class="k">invoice_date</span><span class="v">2024-03-14</span></div>
+          <div class="field-chip" data-f="f4"><span class="k">line_item</span><span class="v">$1,200.00</span></div>
+          <div class="field-chip" data-f="f5"><span class="k">total</span><span class="v">$1,320.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BENEFITS -->
+<section>
+  <div class="container">
+    <div class="center" style="margin-bottom:40px">
+      <div class="section-tag">Why teams switch</div>
+      <h2>Speed you'd expect. Trust you can't get anywhere else.</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>See where every number came from</h3>
+        <p class="muted">Other tools hand you an answer and ask you to trust it. Groundtruth shows its work. Click any field and we highlight the exact sentence, cell or line it came from. When a total looks wrong, you don't re-read 40 pages — you click once.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🧩</div>
+        <h3>No prompts, no code, no data team</h3>
+        <p class="muted">Pick a template — invoices, contracts, resumes, research papers, clinical notes — or describe the fields you want in plain English. Upload a PDF or paste text and get structured data back in seconds. If you can fill out a form, you can use Groundtruth.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3>Built to be audited, not just used</h3>
+        <p class="muted">Every field is grounded in the source, so your output is defensible. Export data alongside its citations for compliance, and catch extraction errors before they reach your books, your case file or your patient record.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="soft" id="how">
+  <div class="container narrow">
+    <div class="center" style="margin-bottom:40px">
+      <div class="section-tag">How it works</div>
+      <h2>From PDF to verified data in three steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h3>Upload or paste</h3><p class="muted">Drop in a PDF, a text file, or paste raw text. One document or a whole batch.</p></div></div>
+      <div class="step"><div class="num">2</div><div><h3>Pick a template or describe your fields</h3><p class="muted">Choose a ready-made schema, or type what you need: "vendor name, invoice number, line items, total, due date." No syntax to learn.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>Get grounded data back</h3><p class="muted">Review results in an interactive highlighted viewer, fix anything that looks off, and export to JSON, CSV or a table — or push it via API.</p></div></div>
+    </div>
+    <div class="center" style="margin-top:24px"><a href="login.html?mode=signup" class="btn btn-primary btn-lg">Try it on your document →</a></div>
+  </div>
+</section>
+
+<!-- WHY GROUNDING -->
+<section id="why">
+  <div class="container narrow center">
+    <div class="section-tag">The whole point</div>
+    <h2>A wrong number you can't trace is worse than no number at all.</h2>
+    <p class="muted" style="font-size:1.05rem">Every AI tool that reads documents makes mistakes — misreads a smudged total, confuses two similar dates, invents a value that isn't there. The difference isn't whether errors happen. It's whether you can catch them.</p>
+    <p class="muted" style="font-size:1.05rem">Generic extractors and chat tools give you an answer floating free of its source. To check it, you re-open the document and hunt. Most people don't — they trust it, and the error slips through into an invoice, a contract summary, or a claim.</p>
+    <p style="font-size:1.05rem">Groundtruth is built on Google's open-source <strong>LangExtract</strong>, which anchors every extracted value to its exact span in the original text. We surface that as an interactive highlight. You get the speed of automation with the confidence of having checked it yourself — because checking takes one click.</p>
+    <p style="font-weight:650;font-size:1.1rem">Trustworthy data isn't data that's always right. It's data you can <span class="hl">always verify.</span></p>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section class="soft">
+  <div class="container narrow center">
+    <h2>Built for teams who can't afford a wrong number.</h2>
+    <p class="muted" style="font-size:1.05rem">Paralegals reconciling contract terms. Accountants closing the month. Claims processors working a queue. Researchers coding a dataset. When the cost of a bad value is a re-filed case or a blown audit, "probably right" isn't good enough.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container narrow">
+    <div class="center" style="margin-bottom:32px"><div class="section-tag">FAQ</div><h2>Questions, answered</h2></div>
+    <div class="faq">
+      <details><summary>How accurate is the extraction?</summary><p>Accuracy depends on document quality — but that's not really the point, because no automated tool is perfect. What makes Groundtruth different is that you don't have to take our word for it. Every field is highlighted in the source, so you can verify each value in one click and correct anything that's off before you export.</p></details>
+      <details><summary>What happens to my documents? Is it private?</summary><p>Your documents are processed to produce your results and are not used to train any models. You can delete uploads and results at any time. Paid plans are covered by a Data Processing Agreement. For sensitive workflows we recommend Pro and Business, which give tighter control over retention and access.</p></details>
+      <details><summary>How is this different from just using ChatGPT?</summary><p>ChatGPT can extract fields, but it hands you an answer with no way to check where it came from — and will occasionally invent values that sound right. Groundtruth grounds every field to the exact location in your document and highlights it, gives you repeatable templates and structured exports (JSON/CSV/API), and is built for batches and workflows, not one-off questions.</p></details>
+      <details><summary>What file types do you support?</summary><p>PDFs, plain text files and pasted text today — covering the vast majority of invoices, contracts, reports, CVs and notes people process by hand. Scanned/image-only PDFs and more formats are on the roadmap.</p></details>
+      <details><summary>Can I cancel anytime?</summary><p>Yes. All paid plans are month-to-month, no contract, no cancellation fee. Cancel from your dashboard and keep access until the end of your billing period. The Free plan is free forever, no card required.</p></details>
+      <details><summary>Can I extract custom fields, not just templates?</summary><p>Absolutely. On any plan you can describe the fields you want in plain English. On Pro and Business you can save reusable custom schemas so your team extracts the same fields the same way every time.</p></details>
+      <details><summary>Do you have an API?</summary><p>Yes — included on Pro and Business. Send documents and get grounded, structured data back programmatically. Business plans add webhooks so results push to your systems automatically.</p></details>
+      <details><summary>How secure is the platform?</summary><p>We use encryption in transit and at rest, scoped access controls and a strict no-training policy on your data. Business plans support team roles and access management. For specific compliance requirements, contact us and we'll walk you through our controls.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="container">
+    <div class="cta-band">
+      <h2>Stop trusting black boxes. Start verifying.</h2>
+      <p>Extract your first documents free — 25 pages a month, no card required. Upgrade only when hand-keying data is officially a thing of the past.</p>
+      <a href="login.html?mode=signup" class="btn btn-primary btn-lg">Start free →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot-inner">
+    <div><a href="/" class="brand" style="font-size:1rem"><img src="assets/logo.svg" class="logo" alt="">Groundtruth</a><p style="margin-top:8px">Verifiable document data extraction.</p></div>
+    <div style="display:flex;gap:32px;flex-wrap:wrap">
+      <div><strong style="display:block;color:var(--ink);margin-bottom:8px">Product</strong><a href="pricing.html">Pricing</a><br><a href="login.html">Log in</a><br><a href="login.html?mode=signup">Sign up</a></div>
+      <div><strong style="display:block;color:var(--ink);margin-bottom:8px">Company</strong><a href="#why">Why grounding</a><br><a href="mailto:hello@groundtruth.app">Contact</a></div>
+    </div>
+  </div>
+  <div class="container" style="margin-top:24px;font-size:.82rem">© 2026 Groundtruth. Built on the open-source LangExtract library. Not affiliated with Google.</div>
+</footer>
+
+<script src="js/landing.js"></script>
+</body>
+</html>

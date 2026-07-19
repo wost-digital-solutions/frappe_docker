@@ -1,0 +1,18 @@
+ACME CONSULTING LLC
+123 Market Street, Lisbon
+
+Invoice #INV-2045
+Invoice Date: 2024-03-14
+Due Date: 2024-04-13
+
+Bill To: Northwind Trading Ltd
+
+Description                         Amount
+Consulting services (March)         $1,200.00
+Cloud infrastructure setup          $  450.00
+Subtotal:                           $1,650.00
+Tax (10%):                          $  165.00
+Total Due:                          $1,815.00
+
+Payment terms: Net 30 days.
+Thank you for your business.

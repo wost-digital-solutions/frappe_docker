@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Groundtruth</title>
+<meta name="description" content="Simple pricing that scales with the pages you process. Start free. Every plan includes source grounding.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand"><img src="assets/logo.svg" class="logo" alt=""> Groundtruth</a>
+    <div class="nav-links">
+      <a href="/#how" class="hide-sm">How it works</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="login.html">Log in</a>
+      <a href="login.html?mode=signup" class="btn btn-primary btn-sm">Start free</a>
+    </div>
+  </div>
+</nav>
+
+<section>
+  <div class="container center" style="padding-bottom:24px">
+    <div class="section-tag">Pricing</div>
+    <h1>Pricing that scales with the pages you process</h1>
+    <p class="muted narrow" style="margin:0 auto;font-size:1.1rem">Start free. Upgrade when you're ready. Cancel anytime. Every plan includes source grounding — because verification isn't a premium feature, it's the whole point.</p>
+  </div>
+
+  <div class="container">
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <div class="price">€0<small>/mo</small></div>
+        <p class="muted" style="font-size:.85rem;min-height:2.4em">Try grounded extraction on real documents, no card required.</p>
+        <ul>
+          <li>25 pages / month</li>
+          <li>All templates + custom fields</li>
+          <li>Interactive highlighted viewer</li>
+          <li>JSON / CSV export (watermarked)</li>
+          <li>Community support</li>
+        </ul>
+        <a href="login.html?mode=signup" class="btn btn-ghost">Start free</a>
+      </div>
+
+      <div class="plan">
+        <h3>Starter</h3>
+        <div class="price">€29<small>/mo</small></div>
+        <p class="muted" style="font-size:.85rem;min-height:2.4em">For the individual who's done copying data out of PDFs by hand.</p>
+        <ul>
+          <li>500 pages / month</li>
+          <li>Everything in Free</li>
+          <li>No watermark on exports</li>
+          <li>Full extraction history</li>
+          <li>Email support</li>
+        </ul>
+        <button class="btn btn-primary" data-plan="starter">Choose Starter</button>
+      </div>
+
+      <div class="plan pop">
+        <div class="badge">Most popular</div>
+        <h3>Pro</h3>
+        <div class="price">€99<small>/mo</small></div>
+        <p class="muted" style="font-size:.85rem;min-height:2.4em">For power users and small teams who need repeatable, programmatic extraction.</p>
+        <ul>
+          <li>2,500 pages / month</li>
+          <li>Everything in Starter</li>
+          <li>Custom saved schemas</li>
+          <li>REST API access</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn btn-primary" data-plan="pro">Choose Pro</button>
+      </div>
+
+      <div class="plan">
+        <h3>Business</h3>
+        <div class="price">€299<small>/mo</small></div>
+        <p class="muted" style="font-size:.85rem;min-height:2.4em">For teams running document extraction as a core workflow.</p>
+        <ul>
+          <li>10,000 pages / month</li>
+          <li>Everything in Pro</li>
+          <li>Team accounts & roles</li>
+          <li>Webhooks & integrations</li>
+          <li>Onboarding & SLA</li>
+        </ul>
+        <button class="btn btn-dark" data-plan="business">Choose Business</button>
+      </div>
+    </div>
+    <p class="center muted" style="margin-top:18px;font-size:.9rem">Overage on paid plans: <strong>€0.05/page</strong>. Need more than 10,000 pages/month, on-prem, or a custom DPA? <a href="mailto:hello@groundtruth.app">Contact us</a> for Enterprise.</p>
+    <div id="billingNote" class="center muted" style="font-size:.85rem;margin-top:8px"></div>
+  </div>
+</section>
+
+<section class="soft">
+  <div class="container">
+    <h2 class="center" style="margin-bottom:28px">Compare plans</h2>
+    <div style="overflow-x:auto">
+    <table class="table-view" style="min-width:640px;background:#fff;border:1px solid var(--line);border-radius:12px">
+      <thead><tr><th>Feature</th><th>Free</th><th>Starter</th><th>Pro</th><th>Business</th></tr></thead>
+      <tbody>
+        <tr><td>Pages / month</td><td>25</td><td>500</td><td>2,500</td><td>10,000</td></tr>
+        <tr><td>Overage per page</td><td>—</td><td>€0.05</td><td>€0.05</td><td>€0.05</td></tr>
+        <tr><td>All templates + custom fields</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Source grounding + viewer</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>JSON / CSV export</td><td>Watermarked</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Extraction history</td><td>—</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Saved custom schemas</td><td>—</td><td>—</td><td>✓</td><td>✓</td></tr>
+        <tr><td>API access</td><td>—</td><td>—</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Webhooks</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr>
+        <tr><td>Team accounts & roles</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr>
+        <tr><td>Support</td><td>Community</td><td>Email</td><td>Priority</td><td>Priority + onboarding</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="center muted" style="margin-top:16px;font-size:.85rem">All plans are month-to-month. Cancel anytime. Prices exclude VAT where applicable.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot-inner">
+    <div><a href="/" class="brand" style="font-size:1rem"><img src="assets/logo.svg" class="logo" alt="">Groundtruth</a></div>
+    <div><a href="/">Home</a> · <a href="login.html">Log in</a> · <a href="mailto:hello@groundtruth.app">Contact</a></div>
+  </div>
+  <div class="container" style="margin-top:16px;font-size:.82rem">© 2026 Groundtruth. Built on the open-source LangExtract library. Not affiliated with Google.</div>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+(async function () {
+  // Reflect whether billing is live on this deployment.
+  try {
+    const cfg = await GT.config();
+    if (!cfg.billing_enabled) {
+      document.getElementById('billingNote').textContent =
+        'Note: this deployment is running without a payment processor configured — upgrade buttons are enabled once Stripe keys are set.';
+    }
+  } catch (e) {}
+
+  document.querySelectorAll('button[data-plan]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const plan = btn.dataset.plan;
+      if (!GT.isAuthed()) {
+        location.href = 'login.html?mode=signup&next=pricing&plan=' + plan;
+        return;
+      }
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = 'Redirecting…';
+      try {
+        const { url } = await GT.checkout(plan);
+        location.href = url;
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = original;
+        alert(e.message);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
