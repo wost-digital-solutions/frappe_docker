@@ -147,13 +147,22 @@ Tax (10%) .................. $120.00
   </div>
 </section>
 
-<!-- CTA -->
+<!-- CTA + early access -->
 <section>
   <div class="container">
     <div class="cta-band">
       <h2>Stop trusting black boxes. Start verifying.</h2>
       <p>Extract your first documents free — 25 pages a month, no card required. Upgrade only when hand-keying data is officially a thing of the past.</p>
-      <a href="login.html?mode=signup" class="btn btn-primary btn-lg">Start free →</a>
+      <a href="login.html?mode=signup" class="btn btn-primary btn-lg" onclick="GTA&&GTA.track('cta_click',{loc:'footer'})">Start free →</a>
+
+      <div style="max-width:440px;margin:28px auto 0;border-top:1px solid rgba(255,255,255,.12);padding-top:24px">
+        <p style="color:#fff;font-weight:600;margin-bottom:12px">Not ready to sign up? Get launch updates + the Auditable Extraction Checklist.</p>
+        <form id="waitlistForm" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <input class="input" type="email" id="wlEmail" required placeholder="you@company.com" style="flex:1;min-width:220px">
+          <button class="btn btn-primary" type="submit">Join the list</button>
+        </form>
+        <div id="wlMsg" style="font-size:.85rem;margin-top:10px;min-height:1.2em;color:var(--muted-2)"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -169,6 +178,34 @@ Tax (10%) .................. $120.00
   <div class="container" style="margin-top:24px;font-size:.82rem">© 2026 Groundtruth. Built on the open-source LangExtract library. Not affiliated with Google.</div>
 </footer>
 
+<script src="js/analytics.js"></script>
+<script src="js/api.js"></script>
 <script src="js/landing.js"></script>
+<script>
+(function () {
+  var form = document.getElementById('waitlistForm');
+  var msg = document.getElementById('wlMsg');
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var email = document.getElementById('wlEmail').value.trim();
+    msg.textContent = 'Adding you…';
+    try {
+      var r = await fetch('/api/waitlist', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: 'landing_hero' })
+      });
+      var data = await r.json();
+      if (!r.ok) throw new Error((data && data.detail) || 'Failed');
+      msg.style.color = '#a7f3d0';
+      msg.textContent = "✅ " + (data.message || "You're on the list.");
+      form.reset();
+      GTA.track('cta_click', { loc: 'waitlist' });
+    } catch (err) {
+      msg.style.color = '#fca5a5';
+      msg.textContent = 'Please enter a valid email.';
+    }
+  });
+})();
+</script>
 </body>
 </html>

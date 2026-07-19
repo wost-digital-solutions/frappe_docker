@@ -122,12 +122,17 @@ def _apply_subscription(db: Session, customer_id: str, subscription: dict) -> No
         plan_key = plan_for_stripe_price(price.get("id", ""))
         break
 
+    previous_plan = user.plan
     if status in ("active", "trialing"):
         user.plan = plan_key
     elif status in ("canceled", "unpaid", "incomplete_expired"):
         user.plan = "free"
     db.add(user)
     db.commit()
+
+    if previous_plan == "free" and user.plan != "free":
+        from . import analytics
+        analytics.log(db, "upgrade", user_id=user.id, plan=user.plan)
 
 
 def handle_webhook(db: Session, payload: bytes, sig_header: str) -> dict:

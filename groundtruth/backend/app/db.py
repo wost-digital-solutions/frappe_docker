@@ -80,6 +80,29 @@ class Job(Base):
     user: Mapped["User"] = relationship(back_populates="jobs")
 
 
+class Lead(Base):
+    """Early-access / waitlist capture from the landing page."""
+    __tablename__ = "leads"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(320), index=True, nullable=False)
+    source: Mapped[str] = mapped_column(String(64), default="landing")
+    note: Mapped[str] = mapped_column(String(512), default="")
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Event(Base):
+    """Funnel event log: visit -> signup -> first_extraction -> export -> upgrade."""
+    __tablename__ = "events"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(48), index=True)
+    user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    anon_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
+    meta: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+
 class UsageRecord(Base):
     """Per-billing-cycle usage counter. One row per (user, period)."""
     __tablename__ = "usage_records"

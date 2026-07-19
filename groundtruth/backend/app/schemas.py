@@ -10,6 +10,7 @@ class SignupRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
     full_name: str = ""
+    anon_id: str = ""
 
 
 class LoginRequest(BaseModel):
@@ -40,3 +41,15 @@ class ExtractRequest(BaseModel):
 
 class CheckoutRequest(BaseModel):
     plan: str
+
+
+class WaitlistRequest(BaseModel):
+    email: EmailStr
+    source: str = "landing"
+    note: str = ""
+
+
+class TrackRequest(BaseModel):
+    name: str
+    anon_id: str = ""
+    meta: dict = Field(default_factory=dict)

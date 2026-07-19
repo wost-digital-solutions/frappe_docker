@@ -1,0 +1,50 @@
+# One-click deploy to Render — https://render.com
+# 1. Push this repo to GitHub.
+# 2. Render Dashboard -> New -> Blueprint -> pick this repo.
+# 3. Set the secret env vars (GEMINI_API_KEY, STRIPE_*, SECRET_KEY, ADMIN_TOKEN).
+# 4. Deploy. Add your Stripe webhook -> https://YOUR-SERVICE.onrender.com/api/billing/webhook
+services:
+  - type: web
+    name: groundtruth
+    runtime: docker
+    dockerfilePath: ./groundtruth/Dockerfile
+    dockerContext: ./groundtruth
+    plan: starter          # free tier also works for validation
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PUBLIC_BASE_URL
+        sync: false        # set to https://YOUR-SERVICE.onrender.com after first deploy
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: groundtruth-db
+          property: connectionString
+      - key: DEFAULT_MODEL_ID
+        value: gemini-3.5-flash
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_STARTER
+        sync: false
+      - key: STRIPE_PRICE_PRO
+        sync: false
+      - key: STRIPE_PRICE_BUSINESS
+        sync: false
+      - key: STRIPE_PRICE_OVERAGE_METERED
+        sync: false
+
+databases:
+  - name: groundtruth-db
+    plan: basic-256mb      # smallest paid Postgres; use free if available
+    postgresMajorVersion: "16"

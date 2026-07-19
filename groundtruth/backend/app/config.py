@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite:///./groundtruth.db"
 
+    # Admin (funnel metrics dashboard). Change this in production.
+    admin_token: str = "change-me-admin-token"
+
     # LLM
     gemini_api_key: str = ""
     openai_api_key: str = ""

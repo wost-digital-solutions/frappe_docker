@@ -8,15 +8,15 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
-from . import billing, exports
+from . import analytics, billing, exports
 from .config import settings
-from .db import Job, User, get_db, init_db
+from .db import Job, Lead, User, get_db, init_db
 from .extraction import extract_text_from_pdf, run_extraction
 from .plans import PLANS, PLAN_ORDER, get_plan
 from .schemas import (
@@ -25,7 +25,9 @@ from .schemas import (
     LoginRequest,
     SignupRequest,
     TokenResponse,
+    TrackRequest,
     UserResponse,
+    WaitlistRequest,
 )
 from .security import create_access_token, get_current_user, hash_password, verify_password
 from .templates_lib import public_catalog
@@ -97,6 +99,7 @@ def signup(body: SignupRequest, db: Session = Depends(get_db)) -> TokenResponse:
     db.add(user)
     db.commit()
     db.refresh(user)
+    analytics.log(db, "signup", user_id=user.id, anon_id=body.anon_id or None)
     return TokenResponse(access_token=create_access_token(str(user.id)))
 
 
@@ -178,6 +181,9 @@ def _do_extract(
     db.refresh(job)
 
     usage = commit_usage(db, user, pages)
+
+    analytics.log_first(db, "first_extraction", user_id=user.id, template=template)
+    analytics.log(db, "extraction", user_id=user.id, template=template, mode=result["mode"], pages=pages)
 
     return {
         "job_id": job.id,
@@ -284,6 +290,7 @@ def export_job(fmt: str, job_id: int, user: User = Depends(get_current_user), db
         media = "text/csv"
     else:
         raise HTTPException(status_code=400, detail="Unsupported format. Use json or csv.")
+    analytics.log(db, "export", user_id=user.id, fmt=fmt)
     return Response(
         content=content,
         media_type=media,
@@ -320,6 +327,44 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
     return result
+
+
+# --------------------------------------------------------------------------- #
+# Growth: waitlist capture + funnel analytics
+# --------------------------------------------------------------------------- #
+@app.post("/api/waitlist")
+def join_waitlist(body: WaitlistRequest, db: Session = Depends(get_db)) -> dict:
+    email = body.email.lower()
+    exists = db.query(Lead).filter(Lead.email == email).first()
+    if not exists:
+        db.add(Lead(email=email, source=body.source or "landing", note=body.note or ""))
+        db.commit()
+        analytics.log(db, "waitlist", email=email, source=body.source)
+    return {"ok": True, "message": "You're on the list — we'll be in touch."}
+
+
+@app.post("/api/track")
+def track_event(body: TrackRequest, db: Session = Depends(get_db)) -> dict:
+    # Public, best-effort pageview/visit tracking from the frontend.
+    allowed = {"visit", "view_pricing", "start_signup", "cta_click"}
+    if body.name in allowed:
+        analytics.log(db, body.name, anon_id=body.anon_id or None, **(body.meta or {}))
+    return {"ok": True}
+
+
+def _require_admin(x_admin_token: str = Header(default="")) -> None:
+    if not x_admin_token or x_admin_token != settings.admin_token:
+        raise HTTPException(status_code=403, detail="Admin token required.")
+
+
+@app.get("/api/admin/funnel")
+def admin_funnel(days: int = 30, _: None = Depends(_require_admin), db: Session = Depends(get_db)) -> dict:
+    return analytics.funnel(db, days=days)
+
+
+@app.get("/api/admin/leads")
+def admin_leads(_: None = Depends(_require_admin), db: Session = Depends(get_db)) -> dict:
+    return {"leads": analytics.recent_leads(db)}
 
 
 # --------------------------------------------------------------------------- #

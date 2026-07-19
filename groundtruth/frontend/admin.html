@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Funnel — Groundtruth Admin</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<nav class="nav"><div class="container nav-inner">
+  <a href="/" class="brand"><img src="assets/logo.svg" class="logo" alt=""> Groundtruth · Admin</a>
+</div></nav>
+
+<div class="container" style="padding:32px 24px;max-width:900px">
+  <h2>Funnel dashboard</h2>
+  <p class="muted">Enter your admin token to view the acquisition funnel. The metrics track <code>visit → signup → first_extraction → export → upgrade</code>.</p>
+
+  <div class="toolbar">
+    <input class="input" id="tok" type="password" placeholder="Admin token" style="max-width:280px">
+    <select class="select" id="days" style="max-width:140px">
+      <option value="7">Last 7 days</option>
+      <option value="30" selected>Last 30 days</option>
+      <option value="90">Last 90 days</option>
+    </select>
+    <button class="btn btn-primary" id="load">Load</button>
+    <span id="status" class="muted"></span>
+  </div>
+
+  <div id="out" class="hidden">
+    <div class="grid-3" id="totals" style="margin:20px 0"></div>
+    <h3>Funnel</h3>
+    <div id="funnel" style="margin-bottom:20px"></div>
+    <h3>Conversion</h3>
+    <table class="table-view" id="conv" style="background:#fff;border:1px solid var(--line);border-radius:12px"></table>
+    <h3 style="margin-top:24px">Recent waitlist leads</h3>
+    <div id="leads"></div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+function bar(label, value, max) {
+  const pct = max ? Math.round(100 * value / max) : 0;
+  return '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.85rem"><strong>' + label + '</strong><span>' + value + '</span></div>' +
+    '<div class="meter-bar" style="height:14px"><div class="meter-fill" style="width:' + pct + '%"></div></div></div>';
+}
+async function load() {
+  const token = $('tok').value.trim();
+  const days = $('days').value;
+  $('status').textContent = 'Loading…';
+  localStorage.setItem('gt_admin', token);
+  try {
+    const [fr, lr] = await Promise.all([
+      fetch('/api/admin/funnel?days=' + days, { headers: { 'X-Admin-Token': token } }),
+      fetch('/api/admin/leads', { headers: { 'X-Admin-Token': token } }),
+    ]);
+    if (!fr.ok) throw new Error('Invalid token (' + fr.status + ')');
+    const f = await fr.json();
+    const l = await lr.json();
+    $('out').classList.remove('hidden');
+    $('status').textContent = '';
+
+    $('totals').innerHTML =
+      '<div class="card center"><div class="muted">Users</div><div style="font-size:2rem;font-weight:800">' + f.totals.users + '</div></div>' +
+      '<div class="card center"><div class="muted">Paying</div><div style="font-size:2rem;font-weight:800">' + f.totals.paying_users + '</div></div>' +
+      '<div class="card center"><div class="muted">Waitlist</div><div style="font-size:2rem;font-weight:800">' + f.totals.waitlist_leads + '</div></div>';
+
+    const steps = ['visit', 'signup', 'first_extraction', 'export', 'upgrade'];
+    const max = f.funnel.visit || Math.max(...steps.map(s => f.funnel[s]), 1);
+    $('funnel').innerHTML = steps.map(s => bar(s, f.funnel[s], max)).join('');
+
+    const c = f.conversion;
+    $('conv').innerHTML = '<tr><td>Visit → Signup</td><td><strong>' + c.visit_to_signup + '%</strong></td></tr>' +
+      '<tr><td>Signup → Activated</td><td><strong>' + c.signup_to_activated + '%</strong></td></tr>' +
+      '<tr><td>Activated → Export</td><td><strong>' + c.activated_to_export + '%</strong></td></tr>' +
+      '<tr><td>Signup → Paid</td><td><strong>' + c.signup_to_paid + '%</strong></td></tr>' +
+      '<tr><td>Visit → Paid</td><td><strong>' + c.visit_to_paid + '%</strong></td></tr>';
+
+    $('leads').innerHTML = (l.leads && l.leads.length)
+      ? '<table class="table-view" style="background:#fff;border:1px solid var(--line);border-radius:12px"><thead><tr><th>Email</th><th>Source</th><th>When</th></tr></thead><tbody>' +
+        l.leads.map(x => '<tr><td>' + x.email + '</td><td>' + x.source + '</td><td class="muted">' + (x.created_at || '').slice(0, 16) + '</td></tr>').join('') + '</tbody></table>'
+      : '<p class="muted">No leads yet.</p>';
+  } catch (e) {
+    $('status').textContent = e.message;
+  }
+}
+$('load').addEventListener('click', load);
+$('tok').value = localStorage.getItem('gt_admin') || '';
+</script>
+</body>
+</html>

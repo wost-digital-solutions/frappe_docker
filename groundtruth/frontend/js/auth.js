@@ -57,6 +57,7 @@
       let res;
       if (mode === 'signup') {
         body.full_name = els.fullName.value.trim();
+        if (window.GTA) body.anon_id = GTA.anonId();
         res = await GT.signup(body);
       } else {
         res = await GT.login(body);

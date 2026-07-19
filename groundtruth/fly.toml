@@ -1,0 +1,42 @@
+# Deploy to Fly.io — https://fly.io
+#   cd groundtruth
+#   fly launch --copy-config --no-deploy        # creates the app
+#   fly volumes create gt_data --size 1         # persistent SQLite (skip if using Postgres)
+#   fly secrets set SECRET_KEY=... ADMIN_TOKEN=... GEMINI_API_KEY=... \
+#       STRIPE_SECRET_KEY=... STRIPE_WEBHOOK_SECRET=... STRIPE_PUBLISHABLE_KEY=... \
+#       STRIPE_PRICE_STARTER=... STRIPE_PRICE_PRO=... STRIPE_PRICE_BUSINESS=...
+#   fly deploy
+# Then add the Stripe webhook -> https://YOUR-APP.fly.dev/api/billing/webhook
+
+app = "groundtruth"
+primary_region = "cdg"   # change to your nearest region
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PUBLIC_BASE_URL = "https://groundtruth.fly.dev"   # update to your real domain
+  DATABASE_URL = "sqlite:////data/groundtruth.db"
+  DEFAULT_MODEL_ID = "gemini-3.5-flash"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.checks]
+    [http_service.checks.health]
+      method = "GET"
+      path = "/api/health"
+      interval = "15s"
+      timeout = "2s"
+
+[[mounts]]
+  source = "gt_data"
+  destination = "/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
