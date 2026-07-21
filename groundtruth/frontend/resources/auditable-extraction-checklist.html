@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Auditable Extraction Checklist — Groundtruth</title>
+<style>
+  :root{--ink:#0b1220;--muted:#64748b;--brand:#4f46e5;--brand-soft:#eef2ff;--hl:#fde68a;--line:#e2e8f0;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.5;background:#fff;}
+  .page{max-width:820px;margin:0 auto;padding:48px 56px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;}
+  .brand .mark{width:26px;height:26px;border-radius:6px;background:var(--brand);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;}
+  h1{font-size:2rem;letter-spacing:-.02em;margin:22px 0 6px;}
+  h1 .hl{background:linear-gradient(180deg,transparent 55%,var(--hl) 55%);padding:0 .1em;}
+  .lede{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 0 8px;}
+  .rule{height:3px;background:var(--brand);width:60px;border-radius:3px;margin:20px 0 26px;}
+  .intro{font-size:.96rem;margin-bottom:26px;}
+  .item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);break-inside:avoid;}
+  .box{flex:0 0 auto;width:22px;height:22px;border:2px solid var(--brand);border-radius:5px;margin-top:2px;}
+  .num{flex:0 0 auto;width:26px;font-weight:800;color:var(--brand);font-size:1.05rem;}
+  .item h3{margin:0 0 3px;font-size:1.02rem;}
+  .item p{margin:0;color:var(--muted);font-size:.9rem;}
+  .why{background:var(--brand-soft);border-radius:12px;padding:20px 24px;margin:30px 0;}
+  .why h2{margin:0 0 8px;font-size:1.1rem;}
+  .why p{margin:0;font-size:.92rem;}
+  .cta{border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-top:26px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  .cta strong{font-size:1.05rem;}
+  .cta a{background:var(--brand);color:#fff;text-decoration:none;font-weight:650;padding:11px 20px;border-radius:8px;white-space:nowrap;}
+  footer{margin-top:34px;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:14px;}
+  @media print{.page{padding:32px 40px;} .cta a{border:1px solid var(--brand);}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="brand"><span class="mark">✓</span> Groundtruth</div>
+
+  <h1>The <span class="hl">Auditable Extraction</span> Checklist</h1>
+  <p class="lede">10 questions to ask before you trust an automated tool to pull data out of your documents — for legal, finance, claims, healthcare and research teams.</p>
+  <div class="rule"></div>
+
+  <p class="intro">Automating document data entry is easy to buy and easy to regret. The tools are fast and mostly right — and "mostly right, with no way to check" is exactly how a wrong number reaches your ledger, your case file, or your patient record. Use this checklist to separate a tool you can defend from a black box you'll have to apologise for.</p>
+
+  <div class="item"><div class="num">1</div><div><h3>Can you see the source of every extracted value?</h3><p>For each field the tool returns, can you trace it back to the exact location in the original document — not just "somewhere in the file", but the specific line, cell or sentence?</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">2</div><div><h3>How long does it take to verify one field?</h3><p>If checking a value means re-reading the document, people won't do it. The bar to clear: verification is a single click, not a re-read.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">3</div><div><h3>Does it ever invent values that aren't in the document?</h3><p>Chat-based tools can produce plausible-but-fabricated data. Confirm the tool only returns text that actually appears in the source — and that you can prove it.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">4</div><div><h3>Is the extraction repeatable?</h3><p>Run the same document twice — do you get the same fields? Ad-hoc prompts drift. Saved templates or schemas keep your team extracting the same way every time.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">5</div><div><h3>Can you export the data <em>with</em> its citations?</h3><p>A spreadsheet of unexplained values isn't auditable. You want structured output (JSON/CSV) where each value carries a pointer back to its source.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">6</div><div><h3>What happens to your documents after processing?</h3><p>Are they used to train models? How long are they retained? Is there a Data Processing Agreement? Get the answers in writing before you upload anything sensitive.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">7</div><div><h3>Who can catch an error — and when?</h3><p>The right time to catch a bad value is before it's committed, by the person responsible for it. A tool that only surfaces errors in a downstream audit has moved the risk, not removed it.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">8</div><div><h3>Does it handle your real documents, not just clean ones?</h3><p>Test it on your messiest invoice, your densest contract, your worst scan. Accuracy on a demo file tells you nothing about Tuesday.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">9</div><div><h3>Can it scale from one document to a batch?</h3><p>One-off extraction is a party trick. Check for batch processing and an API so the tool fits an actual workflow, not just a manual copy-paste replacement.</p></div><div class="box"></div></div>
+
+  <div class="item"><div class="num">10</div><div><h3>If a regulator or client asked "where did this come from?", could you answer?</h3><p>This is the whole test. If the answer is "the AI said so", the tool has failed. If the answer is "here's the exact span in the source", you have an auditable process.</p></div><div class="box"></div></div>
+
+  <div class="why">
+    <h2>Why "source grounding" is the line that matters</h2>
+    <p>Every question above collapses into one idea: an answer you can trace is an answer you can trust. Source grounding — anchoring each extracted field to its exact span in the original document — is what turns automated extraction from a black box into a defensible process. It's the difference between speed and reckless speed.</p>
+  </div>
+
+  <div class="cta">
+    <div><strong>Groundtruth grounds every field by default.</strong><br><span style="color:var(--muted);font-size:.9rem">Extract structured data from any document and verify each value in one click. Free plan — 25 pages/month, no card.</span></div>
+    <a href="https://groundtruth.app">Try it free →</a>
+  </div>
+
+  <footer>© 2026 Groundtruth · Verifiable document data extraction. Built on the open-source LangExtract library; not affiliated with Google. Share this checklist freely.</footer>
+</div>
+</body>
+</html>

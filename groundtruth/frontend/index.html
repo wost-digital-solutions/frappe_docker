@@ -172,7 +172,7 @@ Tax (10%) .................. $120.00
     <div><a href="/" class="brand" style="font-size:1rem"><img src="assets/logo.svg" class="logo" alt="">Groundtruth</a><p style="margin-top:8px">Verifiable document data extraction.</p></div>
     <div style="display:flex;gap:32px;flex-wrap:wrap">
       <div><strong style="display:block;color:var(--ink);margin-bottom:8px">Product</strong><a href="pricing.html">Pricing</a><br><a href="login.html">Log in</a><br><a href="login.html?mode=signup">Sign up</a></div>
-      <div><strong style="display:block;color:var(--ink);margin-bottom:8px">Company</strong><a href="#why">Why grounding</a><br><a href="mailto:hello@groundtruth.app">Contact</a></div>
+      <div><strong style="display:block;color:var(--ink);margin-bottom:8px">Resources</strong><a href="assets/auditable-extraction-checklist.pdf" download>Extraction Checklist (PDF)</a><br><a href="#why">Why grounding</a><br><a href="mailto:hello@groundtruth.app">Contact</a></div>
     </div>
   </div>
   <div class="container" style="margin-top:24px;font-size:.82rem">© 2026 Groundtruth. Built on the open-source LangExtract library. Not affiliated with Google.</div>
@@ -197,9 +197,16 @@ Tax (10%) .................. $120.00
       var data = await r.json();
       if (!r.ok) throw new Error((data && data.detail) || 'Failed');
       msg.style.color = '#a7f3d0';
-      msg.textContent = "✅ " + (data.message || "You're on the list.");
+      msg.innerHTML = "✅ You're on the list. " +
+        '<a href="assets/auditable-extraction-checklist.pdf" download style="color:#fff;text-decoration:underline" ' +
+        "onclick=\"GTA&&GTA.track('cta_click',{loc:'lead_magnet_download'})\">Download your Auditable Extraction Checklist →</a>";
       form.reset();
-      GTA.track('cta_click', { loc: 'waitlist' });
+      // Auto-start the download so the promised asset is delivered immediately.
+      var a = document.createElement('a');
+      a.href = 'assets/auditable-extraction-checklist.pdf';
+      a.download = 'Auditable-Extraction-Checklist.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+      GTA.track('lead_magnet_delivered', { loc: 'waitlist' });
     } catch (err) {
       msg.style.color = '#fca5a5';
       msg.textContent = 'Please enter a valid email.';

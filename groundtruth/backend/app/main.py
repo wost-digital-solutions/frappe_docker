@@ -346,7 +346,7 @@ def join_waitlist(body: WaitlistRequest, db: Session = Depends(get_db)) -> dict:
 @app.post("/api/track")
 def track_event(body: TrackRequest, db: Session = Depends(get_db)) -> dict:
     # Public, best-effort pageview/visit tracking from the frontend.
-    allowed = {"visit", "view_pricing", "start_signup", "cta_click"}
+    allowed = {"visit", "view_pricing", "start_signup", "cta_click", "lead_magnet_delivered"}
     if body.name in allowed:
         analytics.log(db, body.name, anon_id=body.anon_id or None, **(body.meta or {}))
     return {"ok": True}
